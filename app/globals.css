@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #7f9af4;
+  --color-brand-gold: #ffba56;
+  --color-brand-navy: #223d71;
+  --color-brand-navy-light: #2c4d8e;
+  --color-surface-soft: #fafbfc;
+  --color-surface-tint: #f3f6fc;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-lato), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #223d71;
+  background-color: #ffffff;
+}
+
+::selection {
+  background-color: #7f9af4;
+  color: #ffffff;
+}
