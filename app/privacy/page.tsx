@@ -22,7 +22,7 @@ const sections: { heading: string; body: React.ReactNode }[] = [
     heading: 'What we collect',
     body: (
       <>
-        <p>When you submit an issue or contact us, we collect what you enter in the form, for example:</p>
+        <p>When you submit a problem or contact us, we collect what you enter in the form, for example:</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>your name, email address and organisation (optional for general issues);</li>
           <li>a description of the issue and any details you choose to share.</li>

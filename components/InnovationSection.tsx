@@ -44,8 +44,7 @@ const sutdClubsItem = (
   <div className="space-y-1.5">
     <div className="font-semibold">SUTD student clubs</div>
     <p className="text-xs text-[#223d71]/75 leading-relaxed">
-      Student-run clubs and interest groups at SUTD. Browse the directory to see which groups fit your project;
-      their members can take it on as a club initiative.
+      Student-run clubs and interest groups at SUTD.
     </p>
     <a
       href={SUTD_CLUBS_URL}
@@ -123,7 +122,7 @@ const tiers: Tier[] = [
           path: 'Ongoing support',
           note: 'Development through the channels below, with Problem Lab managing the product and acting as your point of contact for ongoing clarification:',
           items: [
-            'Active student projects and programmes',
+            'Active student projects and ventures',
             sutdClubsItem,
             'SUTD- or 42 Singapore-hosted hackathons',
           ],
@@ -131,7 +130,7 @@ const tiers: Tier[] = [
       ],
       6: [
         { spacer: true },
-        { path: 'Ongoing support', items: ['Your custom software'], highlight: true },
+        { path: 'Ongoing support', items: ['Your custom solution'], highlight: true },
       ],
     },
   },
@@ -143,13 +142,13 @@ const laterSteps: StepNo[] = [4, 5, 6];
 /* Small building blocks                                               */
 /* ------------------------------------------------------------------ */
 
-function StepBadge({ no, label }: { no: number; label: string }) {
+function StepBadge({ no, label }: { no: number; label?: string }) {
   return (
     <div className="inline-flex items-center gap-2">
       <span className="w-7 h-7 rounded-full bg-[#223d71] text-white text-xs font-bold flex items-center justify-center shrink-0">
         {no}
       </span>
-      <span className="text-xs font-bold uppercase tracking-wider text-[#223d71]">{label}</span>
+      {label && <span className="text-xs font-bold uppercase tracking-wider text-[#223d71]">{label}</span>}
     </div>
   );
 }
@@ -316,9 +315,9 @@ function TierTabs() {
         {tier.steps ? (
           <ol className="mt-6 space-y-5">
             {laterSteps.map((no) => (
-              <li key={no} className="grid grid-cols-1 md:grid-cols-[6.5rem_1fr] gap-2 md:gap-4">
+              <li key={no} className="grid grid-cols-1 md:grid-cols-[2.5rem_1fr] gap-2 md:gap-4">
                 <div className="md:pt-2">
-                  <StepBadge no={no} label={`Step ${no}`} />
+                  <StepBadge no={no} />
                 </div>
                 <StepCells cells={tier.steps![no]} accent={tier.accent} />
               </li>
@@ -358,7 +357,7 @@ export default function InnovationSection() {
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#223d71]">Innovation</h2>
           <p className="mt-4 text-base sm:text-lg text-[#223d71]/75 leading-relaxed">
-            From first contact to custom software: how an issue moves through Problem Lab.
+            From first contact to a custom solution: how an issue moves through Problem Lab.
           </p>
         </div>
 
@@ -373,7 +372,7 @@ export default function InnovationSection() {
               <div className="flex items-center gap-2 text-[#223d71]">
                 <span className="text-xs font-bold text-[#223d71]/50">A</span>
                 <Globe className="w-4 h-4 text-[#7f9af4]" />
-                <h3 className="font-bold">Submit a General Issue</h3>
+                <h3 className="font-bold">Submit a General Problem</h3>
               </div>
               <p className="mt-2 text-sm text-[#223d71]/75 leading-relaxed">
                 Contact details optional. We publish the outcome on our website, socials or GitHub when complete.
@@ -391,7 +390,7 @@ export default function InnovationSection() {
               <div className="flex items-center gap-2 text-[#223d71]">
                 <span className="text-xs font-bold text-[#223d71]/50">B</span>
                 <PenLine className="w-4 h-4 text-[#ffba56]" />
-                <h3 className="font-bold">Submit Your Issue</h3>
+                <h3 className="font-bold">Submit Your Problem</h3>
               </div>
               <p className="mt-2 text-sm text-[#223d71]/75 leading-relaxed">
                 Work with us directly on your issue, from consultation through to delivery.

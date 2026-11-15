@@ -12,7 +12,7 @@ const exploreLinks = [
   { label: 'Idea', href: '/#idea' },
   { label: 'Innovation', href: '/#innovation' },
   { label: 'Partnering With Us', href: '/#partnering' },
-  { label: 'Submit an Issue', href: '/#contact' },
+  { label: 'Submit a Problem', href: '/#contact' },
 ];
 
 const externalLinks = [

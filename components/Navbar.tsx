@@ -68,7 +68,7 @@ export default function Navbar() {
               className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-[#223d71] hover:bg-[#2c4d8e] active:scale-98 rounded-xl shadow-xs transition-all duration-150 gap-2 border border-[#223d71]"
             >
               <PenLine className="w-4 h-4 text-[#ffba56]" />
-              <span>Submit Issue</span>
+              <span>Submit a Problem</span>
             </Link>
 
             {/* Mobile Hamburger Toggle Button */}
@@ -108,7 +108,7 @@ export default function Navbar() {
                 className="w-full text-center py-3 text-sm font-bold text-white bg-[#223d71] hover:bg-[#2c4d8e] rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2"
               >
                 <PenLine className="w-4 h-4 text-[#ffba56]" />
-                Submit a Problem Statement
+                Submit a Problem
               </Link>
               <div className="flex justify-center pt-1">
                 <ZigZagWave width={140} height={32} color="#7f9af4" secondaryColor="#ffba56" />

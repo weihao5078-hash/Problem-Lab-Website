@@ -74,7 +74,7 @@ const youGet: Item[] = [
   },
   {
     icon: <Code2 className="w-5 h-5" />,
-    title: 'Custom software',
+    title: 'Custom solution',
     text: 'Built by student developers and builders, with Problem Lab managing the product and acting as your point of contact.',
     tag: 'Tier 3',
   },
