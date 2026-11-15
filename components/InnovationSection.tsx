@@ -114,7 +114,7 @@ const tiers: Tier[] = [
         },
         {
           path: 'Ongoing support',
-          items: ['We identify suitable SUTD students to work with and create a proposal'],
+          items: ['We identify suitable builders and developers to work with and create a proposal'],
         },
       ],
       5: [
@@ -123,7 +123,7 @@ const tiers: Tier[] = [
           path: 'Ongoing support',
           note: 'Development through the channels below, with Problem Lab managing the product and acting as your point of contact for ongoing clarification:',
           items: [
-            'SUTD students completing school projects or programmes',
+            'Active student projects and programmes',
             sutdClubsItem,
             'SUTD- or 42 Singapore-hosted hackathons',
           ],

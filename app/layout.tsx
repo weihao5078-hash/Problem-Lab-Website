@@ -3,16 +3,16 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Problem Lab — Issue · Idea · Innovation',
-  description: 'Problem Lab bridges the gap between critical issues and high-impact innovation ideas. Explore our innovation methodology, strategic partners, and venture ecosystem.',
+  description: 'Problem Lab is a student-led research collective based in SUTD. We validate real-world problems and connect them with the builders who can solve them.',
   openGraph: {
     title: 'Problem Lab — Issue · Idea · Innovation',
-    description: 'Problem Lab bridges the gap between critical issues and high-impact innovation ideas. Explore our innovation methodology, strategic partners, and venture ecosystem.',
+    description: 'Problem Lab is a student-led research collective based in SUTD. We validate real-world problems and connect them with the builders who can solve them.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Problem Lab — Issue · Idea · Innovation',
-    description: 'Problem Lab bridges the gap between critical issues and high-impact innovation ideas. Explore our innovation methodology, strategic partners, and venture ecosystem.',
+    description: 'Problem Lab is a student-led research collective based in SUTD. We validate real-world problems and connect them with the builders who can solve them.',
   },
 };
 

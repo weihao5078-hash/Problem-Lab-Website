@@ -75,7 +75,7 @@ const youGet: Item[] = [
   {
     icon: <Code2 className="w-5 h-5" />,
     title: 'Custom software',
-    text: 'Built with SUTD students, with Problem Lab managing the product and acting as your point of contact.',
+    text: 'Built by student developers and builders, with Problem Lab managing the product and acting as your point of contact.',
     tag: 'Tier 3',
   },
 ];
@@ -147,7 +147,7 @@ export default function WhatYouGetSection() {
             <GraduationCap className="w-5 h-5 mt-0.5 shrink-0 text-[#223d71]" />
             <p className="text-sm text-[#223d71]/80 leading-relaxed">
               <span className="font-bold text-[#223d71]">Why students stay committed:</span> your project counts
-              towards their SUTD coursework, programmes or club work, and becomes portfolio work backed by your
+              towards their project work, programmes or club work, and becomes portfolio work backed by your
               testimonial.
             </p>
           </div>

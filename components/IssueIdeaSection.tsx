@@ -16,10 +16,10 @@ export default function IssueIdeaSection() {
             The Foundation
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#223d71]">
-            From Problem Discovery to Innovation Breakthrough
+            From Problem Discovery to Real-World Solutions
           </h2>
           <p className="mt-4 text-base sm:text-lg text-[#223d71]/75 leading-relaxed">
-            Most startups fail because they solve problems nobody has. Problem Lab shifts the paradigm: we identify and validate critical issues first, engineering ideas only where substantial value can be unlocked.
+            Many ventures stall because they solve problems that were never properly validated. Problem Lab starts with the problem: we research and validate real-world issues first, so ideas are built where they create real value.
           </p>
         </div>
 
@@ -35,20 +35,20 @@ export default function IssueIdeaSection() {
             </div>
             <div className="p-8 sm:p-12 lg:p-16 flex flex-col justify-center items-start bg-[#fafbfc]">
               <p className="text-base text-[#223d71]/80 leading-relaxed max-w-md">
-                We dissect complex industry, technological, and societal bottlenecks. We uncover the hidden friction points, regulatory shifts, and fundamental human constraints that dictate real-world necessity.
+                We investigate challenges across industries and communities, uncovering the root causes, constraints and user needs behind each issue.
               </p>
               <div className="mt-6 space-y-2.5 w-full">
                 <div className="flex items-center gap-2.5 text-sm font-semibold text-[#223d71]">
                   <span className="w-2 h-2 rounded-full bg-[#7f9af4]" />
-                  <span>Quantified Market Pain &amp; Total Cost of Inaction</span>
+                  <span>Stakeholder Interviews &amp; Field Research</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-sm font-semibold text-[#223d71]">
                   <span className="w-2 h-2 rounded-full bg-[#7f9af4]" />
-                  <span>Deep-Tech &amp; Operational Failure Analysis</span>
+                  <span>Root-Cause Analysis</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-sm font-semibold text-[#223d71]">
                   <span className="w-2 h-2 rounded-full bg-[#7f9af4]" />
-                  <span>Stakeholder Verification &amp; Customer Interviews</span>
+                  <span>Assumption Testing &amp; Review of Existing Solutions</span>
                 </div>
               </div>
             </div>
@@ -58,20 +58,20 @@ export default function IssueIdeaSection() {
           <div id="idea" className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#223d71]/15 scroll-mt-24">
             <div className="order-2 md:order-1 p-8 sm:p-12 lg:p-16 flex flex-col justify-center items-start bg-[#fdfbf7]">
               <p className="text-base text-[#223d71]/80 leading-relaxed max-w-md">
-                Armed with unambiguous problem clarity, our fellows and partner labs engineer breakthrough venture ideas. Every idea is stress-tested against market dynamics, IP viability, and technological feasibility.
+                With a clearly defined problem, builders and project teams develop solution ideas. Each idea is tested against user needs, market fit and technical feasibility.
               </p>
               <div className="mt-6 space-y-2.5 w-full">
                 <div className="flex items-center gap-2.5 text-sm font-semibold text-[#223d71]">
                   <span className="w-2 h-2 rounded-full bg-[#ffba56]" />
-                  <span>Defensible Intellectual Property &amp; Architecture</span>
+                  <span>Evidence-Backed Problem Briefs</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-sm font-semibold text-[#223d71]">
                   <span className="w-2 h-2 rounded-full bg-[#ffba56]" />
-                  <span>Rapid Prototyping &amp; Proof-of-Concept Benchmarking</span>
+                  <span>Prototyping &amp; Proof-of-Concept Testing</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-sm font-semibold text-[#223d71]">
                   <span className="w-2 h-2 rounded-full bg-[#ffba56]" />
-                  <span>Commercial Alignment With Global Business Partners</span>
+                  <span>Validation With Industry Partners</span>
                 </div>
               </div>
             </div>
@@ -89,9 +89,9 @@ export default function IssueIdeaSection() {
             <div className="w-10 h-10 rounded-xl bg-[#7f9af4]/15 text-[#223d71] font-mono font-bold flex items-center justify-center text-sm mb-4">
               01
             </div>
-            <h4 className="text-lg font-bold text-[#223d71] mb-2">Issue Identification</h4>
+            <h4 className="text-lg font-bold text-[#223d71] mb-2">Problem Discovery</h4>
             <p className="text-sm text-[#223d71]/70 leading-relaxed">
-              Systematically gathering intractable friction points across technology, healthcare, infrastructure, and enterprise workflows.
+              Gathering real-world problems from organisations, communities and industry partners.
             </p>
           </div>
 
@@ -99,9 +99,9 @@ export default function IssueIdeaSection() {
             <div className="w-10 h-10 rounded-xl bg-[#7f9af4]/15 text-[#223d71] font-mono font-bold flex items-center justify-center text-sm mb-4">
               02
             </div>
-            <h4 className="text-lg font-bold text-[#223d71] mb-2">Deep Rigor &amp; Framing</h4>
+            <h4 className="text-lg font-bold text-[#223d71] mb-2">Research &amp; Framing</h4>
             <p className="text-sm text-[#223d71]/70 leading-relaxed">
-              Auditing the economic scale, stakeholder dynamics, and systemic constraints behind every problem statement.
+              Investigating the scale, stakeholders and constraints of each problem, and framing it as a clear problem statement.
             </p>
           </div>
 
@@ -111,7 +111,7 @@ export default function IssueIdeaSection() {
             </div>
             <h4 className="text-lg font-bold text-[#223d71] mb-2">Solution Ideation</h4>
             <p className="text-sm text-[#223d71]/70 leading-relaxed">
-              Cross-pollinating technical domains to discover non-obvious, defensible approaches to the verified problem.
+              Bringing different disciplines together to explore practical approaches to the validated problem.
             </p>
           </div>
 
@@ -121,7 +121,7 @@ export default function IssueIdeaSection() {
             </div>
             <h4 className="text-lg font-bold text-[#223d71] mb-2">Partner Validation</h4>
             <p className="text-sm text-[#223d71]/70 leading-relaxed">
-              Connecting emerging solutions with Innovation Partners for research muscle and Business Partners for scale.
+              Testing emerging solutions with partners for research support and real-world adoption.
             </p>
           </div>
         </div>

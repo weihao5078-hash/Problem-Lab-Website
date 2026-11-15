@@ -35,7 +35,7 @@ const sections: { heading: string; body: React.ReactNode }[] = [
     body: (
       <ul className="list-disc pl-5 space-y-1">
         <li>to understand your issue and reply to you;</li>
-        <li>to match your project with suitable SUTD students, clubs or programmes;</li>
+        <li>to match your project with suitable student developers and builders;</li>
         <li>to coordinate consultations, interviews and feedback during the engagement.</li>
       </ul>
     ),

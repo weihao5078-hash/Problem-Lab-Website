@@ -10,7 +10,6 @@ const navLinks = [
   { label: 'Issue', href: '/#issue' },
   { label: 'Idea', href: '/#idea' },
   { label: 'Innovation', href: '/#innovation' },
-  { label: 'Contact', href: '/#contact' },
 ];
 
 export default function Navbar() {

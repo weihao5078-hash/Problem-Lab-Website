@@ -53,8 +53,8 @@ export default function Footer() {
           <div className="space-y-2">
             <h2 className="text-xs font-bold uppercase tracking-wider text-[#223d71] mb-3">About</h2>
             <p className="text-xs sm:text-sm text-[#223d71]/75 leading-relaxed max-w-xs">
-              Problem Lab is a student-led initiative at the Singapore University of Technology and Design, connecting
-              real-world issues with SUTD students.
+              Problem Lab is a student-led research collective based in SUTD. We find, investigate and frame
+              real-world problems, then connect them with the builders best placed to solve them.
             </p>
           </div>
 
@@ -121,7 +121,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#223d71]/60">
-          <p>© {new Date().getFullYear()} Problem Lab · A student-led initiative at SUTD.</p>
+          <p>© {new Date().getFullYear()} Problem Lab · A student-led initiative based in SUTD.</p>
 
           <button
             type="button"
