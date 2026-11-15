@@ -276,6 +276,18 @@ export default function ContactForm() {
 
   return (
     <form method="post" onSubmit={handleSubmit} onChange={handleChange} noValidate className="flex flex-col gap-6" aria-busy={status === 'submitting'}>
+      {/* Intro: kept a step smaller than the section's "Submit a Problem" heading. */}
+      <div className="flex flex-col gap-3 pb-2">
+        <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#223d71]">Get to know us</h3>
+        <p className="text-base font-semibold text-[#223d71]/85 leading-relaxed">
+          Join us at Problem Lab to collaborate with SUTD&apos;s Makers.
+        </p>
+        <p className="text-base text-[#223d71]/75 leading-relaxed">
+          Problem Lab is a student-led research collective that goes into the real world to find, investigate and
+          frame problems worth solving.
+        </p>
+      </div>
+
       {fields.map((f) => {
         const error = fieldErrors[f.name];
         const errorId = `${f.name}-error`;
