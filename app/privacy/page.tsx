@@ -52,6 +52,10 @@ const sections: { heading: string; body: React.ReactNode }[] = [
           Our forms are provided by HubSpot, which stores submissions on our behalf. Your use of the form is also
           subject to HubSpot&apos;s privacy policy.
         </p>
+        <p>
+          To keep out spam, the form uses Cloudflare Turnstile, which checks that a real person is submitting it.
+          This check is subject to Cloudflare&apos;s privacy policy.
+        </p>
       </>
     ),
   },

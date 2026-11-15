@@ -2,13 +2,18 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "problem-lab-publicity",
   "compatibility_date": "2026-11-04",
+  // Worker script: handles POST /api/submit (spam check + forward to HubSpot); everything else is static.
+  "main": "worker/index.ts",
   // Build the static export on every deploy; out/ is not committed.
   "build": {
     "command": "npm run build"
   },
   "assets": {
     "directory": "./out",
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+    "binding": "ASSETS",
+    // Only form submissions reach the Worker first; pages and files are served straight from out/.
+    "run_worker_first": ["/api/*"]
   },
   "observability": {
     "enabled": true
