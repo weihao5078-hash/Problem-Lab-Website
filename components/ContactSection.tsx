@@ -1,17 +1,17 @@
-import Script from 'next/script';
 import { Mail, MapPin } from 'lucide-react';
 import { site } from '@/lib/site';
+import ContactForm from '@/components/ContactForm';
 
 export default function ContactSection() {
   return (
     <section id="contact" className="py-20 md:py-28 bg-[#fdf8f9] border-b border-[#223d71]/10 scroll-mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Contact intro + embedded HubSpot form */}
+        {/* Contact intro + custom form (submits to HubSpot) */}
         <div className="bg-white rounded-3xl border border-[#223d71]/15 shadow-sm overflow-clip">
           <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#223d71]/15">
             
-            {/* Left Box: "Contact" Title */}
+            {/* Left: heading, blurb and contact details */}
             <div className="p-8 sm:p-12 lg:p-16 flex flex-col justify-start items-start md:self-start md:sticky md:top-24">
               <h2 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#223d71]">
                 Submit a Problem
@@ -42,18 +42,9 @@ export default function ContactSection() {
               </div>
             </div>
 
-            {/* Right Box: Embedded HubSpot intake form */}
-            <div className="p-6 sm:p-10 lg:p-12 bg-[#fdfbfb] min-h-[220px]">
-              <div
-                className="hs-form-frame"
-                data-region="na2"
-                data-form-id="924e2cb5-0470-4c29-8b16-0a9a9e4bb18c"
-                data-portal-id="247551294"
-              />
-              <Script
-                src="https://js-na2.hsforms.net/forms/embed/247551294.js"
-                strategy="afterInteractive"
-              />
+            {/* Right: custom intake form, sent to HubSpot */}
+            <div className="p-6 sm:p-10 lg:p-12 bg-[#f9f8f4]">
+              <ContactForm />
             </div>
 
           </div>
