@@ -2,6 +2,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "problem-lab-publicity",
   "compatibility_date": "2026-11-04",
+  // Build the static export on every deploy; out/ is not committed.
+  "build": {
+    "command": "npm run build"
+  },
   "assets": {
     "directory": "./out",
     "not_found_handling": "404-page"

@@ -1,5 +1,6 @@
 import Script from 'next/script';
 import { Mail, MapPin } from 'lucide-react';
+import { site } from '@/lib/site';
 
 export default function ContactSection() {
   return (
@@ -21,12 +22,22 @@ export default function ContactSection() {
 
               <div className="mt-6 flex flex-col gap-3 text-xs sm:text-sm text-[#223d71]/80">
                 <div className="flex items-center gap-2.5">
-                  <Mail className="w-4 h-4 text-[#7f9af4]" />
-                  <span className="font-semibold text-[#223d71]">inquiries@problemlab.org</span>
+                  <Mail className="w-4 h-4 text-[#7f9af4] shrink-0" />
+                  {site.emailVerified ? (
+                    <a href={`mailto:${site.email}`} className="font-semibold text-[#223d71] hover:underline">
+                      {site.email}
+                    </a>
+                  ) : (
+                    <span className="font-semibold text-[#223d71]">{site.email}</span>
+                  )}
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <MapPin className="w-4 h-4 text-[#7f9af4]" />
-                  <span>Waterloo Innovation Hub, Ontario, Canada</span>
+                <div className="flex items-start gap-2.5">
+                  <MapPin className="w-4 h-4 mt-0.5 text-[#7f9af4] shrink-0" />
+                  <address className="not-italic leading-relaxed">
+                    {site.address.org}
+                    <br />
+                    {site.address.lines.join(', ')}
+                  </address>
                 </div>
               </div>
             </div>

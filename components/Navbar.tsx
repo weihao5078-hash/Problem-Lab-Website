@@ -7,10 +7,10 @@ import { Menu, X, ArrowUpRight, PenLine } from 'lucide-react';
 import ZigZagWave from './ZigZagWave';
 
 const navLinks = [
-  { label: 'Issue', href: '#issue' },
-  { label: 'Idea', href: '#idea' },
-  { label: 'Innovation', href: '#innovation' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Issue', href: '/#issue' },
+  { label: 'Idea', href: '/#idea' },
+  { label: 'Innovation', href: '/#innovation' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 export default function Navbar() {
@@ -23,7 +23,7 @@ export default function Navbar() {
           
           {/* Brand Logo */}
           <Link
-            href="#"
+            href="/"
             className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7f9af4] rounded-lg p-1"
           >
             {/* Brand Logo Mark */}
@@ -32,7 +32,6 @@ export default function Navbar() {
               alt="Problem Lab logo"
               width={480}
               height={368}
-              priority
               className="h-10 w-auto"
             />
             
@@ -66,7 +65,7 @@ export default function Navbar() {
           {/* Action CTA & Mobile Toggle */}
           <div className="flex items-center gap-3">
             <Link
-              href="#contact"
+              href="/#contact"
               className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-[#223d71] hover:bg-[#2c4d8e] active:scale-98 rounded-xl shadow-xs transition-all duration-150 gap-2 border border-[#223d71]"
             >
               <PenLine className="w-4 h-4 text-[#ffba56]" />
@@ -105,7 +104,7 @@ export default function Navbar() {
 
             <div className="pt-3 border-t border-[#223d71]/10 flex flex-col gap-3">
               <Link
-                href="#contact"
+                href="/#contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full text-center py-3 text-sm font-bold text-white bg-[#223d71] hover:bg-[#2c4d8e] rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2"
               >

@@ -1,14 +1,5 @@
 import type { Metadata } from 'next';
-import { Lato } from 'next/font/google';
 import './globals.css';
-
-const lato = Lato({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-lato',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: 'Problem Lab — Issue · Idea · Innovation',
@@ -31,7 +22,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={lato.variable}>
+    <html lang="en">
+      <head>
+        {/* Self-hosted font: no request to Google Fonts at build time or in the browser. */}
+        <link rel="preload" href="/fonts/lato-latin-400-normal.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/fonts/lato-latin-700-normal.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="stylesheet" href="/fonts/lato.css" />
+      </head>
       <body className="antialiased bg-white text-[#223d71] selection:bg-[#7f9af4] selection:text-white" suppressHydrationWarning>
         {children}
       </body>

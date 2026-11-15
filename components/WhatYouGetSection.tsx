@@ -4,19 +4,56 @@ import {
   Users,
   MessagesSquare,
   Code2,
-  GraduationCap,
+  ClipboardList,
+  CalendarCheck,
+  Reply,
+  MessageSquareText,
+  Eye,
   BadgeCheck,
-  FolderKanban,
+  GraduationCap,
 } from 'lucide-react';
 
-interface Benefit {
+interface Item {
   icon: React.ReactNode;
   title: string;
   text: string;
   tag?: string; // which tier it comes from
 }
 
-const youGet: Benefit[] = [
+const youDo: Item[] = [
+  {
+    icon: <ClipboardList className="w-5 h-5" />,
+    title: 'Share enough context',
+    text: 'Give us the background, constraints and any data we need to understand the issue properly.',
+  },
+  {
+    icon: <CalendarCheck className="w-5 h-5" />,
+    title: 'Attend the consultation and interviews',
+    text: 'Join the initial consultation and any interviews or check-ins agreed for your tier.',
+  },
+  {
+    icon: <Reply className="w-5 h-5" />,
+    title: 'Reply to students',
+    text: 'Answer clarifying questions within an agreed timeframe so the work keeps moving.',
+  },
+  {
+    icon: <MessageSquareText className="w-5 h-5" />,
+    title: 'Give feedback',
+    text: 'Review drafts and prototypes and tell us what works and what does not.',
+  },
+  {
+    icon: <Eye className="w-5 h-5" />,
+    title: 'Decide on publication',
+    text: 'Tell us whether the final work can be shared publicly or must stay private.',
+  },
+  {
+    icon: <BadgeCheck className="w-5 h-5" />,
+    title: 'Write a short testimonial',
+    text: 'For every successful engagement, provide the students involved with a LinkedIn testimonial.',
+  },
+];
+
+const youGet: Item[] = [
   {
     icon: <FileText className="w-5 h-5" />,
     title: 'Literature review & 2-page report',
@@ -43,25 +80,7 @@ const youGet: Benefit[] = [
   },
 ];
 
-const studentsGet: Benefit[] = [
-  {
-    icon: <GraduationCap className="w-5 h-5" />,
-    title: 'Mandatory curriculum projects',
-    text: 'Real partner projects that fulfil the mandatory projects in their SUTD curriculum and programmes.',
-  },
-  {
-    icon: <BadgeCheck className="w-5 h-5" />,
-    title: 'LinkedIn testimonial',
-    text: 'Partners provide the students involved with a LinkedIn testimonial for every successful engagement.',
-  },
-  {
-    icon: <FolderKanban className="w-5 h-5" />,
-    title: 'Club builds & portfolio',
-    text: 'Meaningful builds for SUTD student clubs, and portfolio-ready work for every student involved.',
-  },
-];
-
-function BenefitList({ items, accent }: { items: Benefit[]; accent: string }) {
+function ItemList({ items, accent }: { items: Item[]; accent: string }) {
   return (
     <ul className="mt-8 space-y-5 w-full">
       {items.map((b) => (
@@ -74,7 +93,7 @@ function BenefitList({ items, accent }: { items: Benefit[]; accent: string }) {
           </span>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h4 className="text-base font-bold text-[#223d71]">{b.title}</h4>
+              <h3 className="text-base font-bold text-[#223d71]">{b.title}</h3>
               {b.tag && (
                 <span className="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#223d71]/[0.07] text-[#223d71]/60">
                   {b.tag}
@@ -91,27 +110,46 @@ function BenefitList({ items, accent }: { items: Benefit[]; accent: string }) {
 
 export default function WhatYouGetSection() {
   return (
-    <section id="what-you-get" className="py-20 md:py-28 bg-[#faf8f3] border-b border-[#223d71]/10 scroll-mt-16">
+    <section id="partnering" className="py-20 md:py-28 bg-[#faf8f3] border-b border-[#223d71]/10 scroll-mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7f9af4]/15 border border-[#7f9af4]/30 text-xs font-bold tracking-wider uppercase text-[#223d71] mb-4">
+            Partnering With Us
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#223d71]">
+            What we need from you, and what you receive
+          </h2>
+        </div>
+
         <div className="bg-white rounded-3xl border border-[#223d71]/15 shadow-sm overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#223d71]/15">
-            {/* Left (top on mobile): What You Get */}
+            {/* Left (top on mobile): partner responsibilities */}
+            <div className="p-8 sm:p-12 lg:p-16 flex flex-col items-start bg-gradient-to-br from-white to-[#fffcf7]/50">
+              <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#223d71]">What You Do</h3>
+              <p className="mt-4 text-base text-[#223d71]/80 leading-relaxed max-w-md">
+                A good outcome depends on your involvement. As a partner, you agree to:
+              </p>
+              <ItemList items={youDo} accent="#ffba56" />
+            </div>
+
+            {/* Right (bottom on mobile): what the partner receives */}
             <div className="p-8 sm:p-12 lg:p-16 flex flex-col items-start bg-gradient-to-br from-white to-[#f4f7fc]/50">
-              <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#223d71]">What You Get</h2>
+              <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#223d71]">What You Get</h3>
               <p className="mt-4 text-base text-[#223d71]/80 leading-relaxed max-w-md">
                 Depending on the tier we agree on together, Problem Lab delivers:
               </p>
-              <BenefitList items={youGet} accent="#7f9af4" />
+              <ItemList items={youGet} accent="#7f9af4" />
             </div>
+          </div>
 
-            {/* Right (bottom on mobile): What Students Get */}
-            <div className="p-8 sm:p-12 lg:p-16 flex flex-col items-start bg-gradient-to-br from-white to-[#fffcf7]/50">
-              <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-[#223d71]">What Students Get</h2>
-              <p className="mt-4 text-base text-[#223d71]/80 leading-relaxed max-w-md">
-                SUTD students who work on your project build real work for real organisations:
-              </p>
-              <BenefitList items={studentsGet} accent="#ffba56" />
-            </div>
+          {/* Brief note on why students stay committed */}
+          <div className="border-t border-[#223d71]/15 bg-[#fafbfc] p-6 sm:p-8 flex items-start gap-3">
+            <GraduationCap className="w-5 h-5 mt-0.5 shrink-0 text-[#223d71]" />
+            <p className="text-sm text-[#223d71]/80 leading-relaxed">
+              <span className="font-bold text-[#223d71]">Why students stay committed:</span> your project counts
+              towards their SUTD coursework, programmes or club work, and becomes portfolio work backed by your
+              testimonial.
+            </p>
           </div>
         </div>
       </div>

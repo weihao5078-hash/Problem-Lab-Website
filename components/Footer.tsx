@@ -4,7 +4,23 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import ZigZagWave from './ZigZagWave';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, ExternalLink, Mail, MapPin } from 'lucide-react';
+import { site } from '@/lib/site';
+
+const exploreLinks = [
+  { label: 'Issue', href: '/#issue' },
+  { label: 'Idea', href: '/#idea' },
+  { label: 'Innovation', href: '/#innovation' },
+  { label: 'Partnering With Us', href: '/#partnering' },
+  { label: 'Submit an Issue', href: '/#contact' },
+];
+
+const externalLinks = [
+  { label: 'Previous projects', href: site.links.previousProjects },
+  { label: 'GitHub', href: site.links.github },
+].filter((l) => l.href);
+
+const linkClass = 'hover:text-[#223d71] hover:underline transition-colors';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -14,82 +30,98 @@ export default function Footer() {
   return (
     <footer className="bg-white border-t border-[#223d71]/10 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-[#223d71]/10">
-          
-          {/* Brand Info */}
-          <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <Image
-                src="/assets/images/problem-lab-logo.png"
-                alt="Problem Lab logo"
-                width={480}
-                height={368}
-                className="h-9 w-auto"
-              />
-              <span className="text-xl font-bold tracking-tight text-[#223d71]">
-                Problem Lab
-              </span>
-            </div>
-
-            <p className="text-xs sm:text-sm text-[#223d71]/70 max-w-sm leading-relaxed">
-              Issue · Idea · Innovation. Bridging high-impact problem spaces with scalable scientific and market breakthroughs.
-            </p>
-
-            <div className="pt-1">
-              <ZigZagWave width={150} height={32} color="#7f9af4" secondaryColor="#ffba56" />
+        {/* Brand row */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-10 border-b border-[#223d71]/10">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/assets/images/problem-lab-logo.png"
+              alt="Problem Lab logo"
+              width={480}
+              height={368}
+              className="h-10 w-auto"
+            />
+            <div>
+              <div className="text-xl font-bold tracking-tight text-[#223d71] leading-none">{site.name}</div>
+              <div className="mt-1 text-sm text-[#7f9af4] font-semibold tracking-wide">{site.tagline}</div>
             </div>
           </div>
+          <ZigZagWave width={150} height={32} color="#7f9af4" secondaryColor="#ffba56" />
+        </div>
 
-          {/* Navigation Links */}
-          <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#223d71] mb-3">
-              Ecosystem
-            </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 py-10 border-b border-[#223d71]/10">
+          {/* About */}
+          <div className="space-y-2">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[#223d71] mb-3">About</h2>
+            <p className="text-xs sm:text-sm text-[#223d71]/75 leading-relaxed max-w-xs">
+              Problem Lab is a student-led initiative at the Singapore University of Technology and Design, connecting
+              real-world issues with SUTD students.
+            </p>
+          </div>
+
+          {/* Explore */}
+          <nav aria-label="Footer">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[#223d71] mb-3">Explore</h2>
             <ul className="space-y-2 text-xs sm:text-sm text-[#223d71]/75">
-              <li>
-                <Link href="#issue" className="hover:text-[#223d71] hover:underline transition-colors">
-                  Issue Analysis
-                </Link>
+              {exploreLinks.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className={linkClass}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Contact */}
+          <div>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[#223d71] mb-3">Contact</h2>
+            <ul className="space-y-3 text-xs sm:text-sm text-[#223d71]/75">
+              <li className="flex items-start gap-2">
+                <Mail className="w-4 h-4 mt-0.5 shrink-0 text-[#7f9af4]" />
+                {site.emailVerified ? (
+                  <a href={`mailto:${site.email}`} className={`${linkClass} break-all`}>
+                    {site.email}
+                  </a>
+                ) : (
+                  <span className="break-all">{site.email}</span>
+                )}
               </li>
-              <li>
-                <Link href="#idea" className="hover:text-[#223d71] hover:underline transition-colors">
-                  Idea Generation
-                </Link>
-              </li>
-              <li>
-                <Link href="#innovation" className="hover:text-[#223d71] hover:underline transition-colors">
-                  Innovation
-                </Link>
-              </li>
-              <li>
-                <Link href="#contact" className="hover:text-[#223d71] hover:underline transition-colors">
-                  Intake &amp; Contact
-                </Link>
+              <li className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-[#7f9af4]" />
+                <address className="not-italic leading-relaxed">
+                  {site.address.org}
+                  <br />
+                  {site.address.lines.join(', ')}
+                </address>
               </li>
             </ul>
           </div>
 
-          {/* GitHub Asset Architecture Note */}
+          {/* Projects, socials, legal */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#223d71] mb-3">
-              Media Architecture
-            </h4>
-            <p className="text-xs text-[#223d71]/70 leading-relaxed">
-              Every asset hook is mapped directly to:
-            </p>
-            <code className="block mt-1.5 p-2 rounded-lg bg-[#223d71]/5 text-[#223d71] font-mono text-[11px] break-all border border-[#223d71]/10">
-              /assets/images/[name].png
-            </code>
-            <p className="mt-2 text-[11px] text-[#223d71]/60">
-              Hot-swappable on GitHub without altering layout code.
-            </p>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[#223d71] mb-3">More</h2>
+            <ul className="space-y-2 text-xs sm:text-sm text-[#223d71]/75">
+              {externalLinks.map((l) => (
+                <li key={l.label}>
+                  <a href={l.href} target="_blank" rel="noopener noreferrer" className={`${linkClass} inline-flex items-center gap-1`}>
+                    {l.label}
+                    <ExternalLink className="w-3 h-3" />
+                    <span className="sr-only">(opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+              <li>
+                <Link href="/privacy" className={linkClass}>
+                  Privacy Policy
+                </Link>
+              </li>
+            </ul>
           </div>
-
         </div>
 
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#223d71]/60">
-          <p>© {new Date().getFullYear()} Problem Lab. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Problem Lab · A student-led initiative at SUTD.</p>
 
           <button
             type="button"
