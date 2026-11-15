@@ -14,10 +14,10 @@ export default function ContactSection() {
             {/* Left Box: "Contact" Title */}
             <div className="p-8 sm:p-12 lg:p-16 flex flex-col justify-start items-start md:self-start md:sticky md:top-24">
               <h2 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#223d71]">
-                Contact
+                Submit a Problem
               </h2>
               <p className="mt-4 text-base text-[#223d71]/80 leading-relaxed max-w-md">
-                Have an unaddressed industry issue, an ambitious venture hypothesis, or an institution ready to partner with Problem Lab? Connect directly with our team.
+                Have an unaddressed industry problem, a challenge you want properly investigated, or an organisation ready to partner with Problem Lab? Share the details and our team will be in touch.
               </p>
 
               <div className="mt-6 flex flex-col gap-3 text-xs sm:text-sm text-[#223d71]/80">

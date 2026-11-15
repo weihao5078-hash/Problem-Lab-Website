@@ -105,7 +105,7 @@ export default function Navbar() {
               <Link
                 href="/#contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-3 text-sm font-bold text-white bg-[#223d71] hover:bg-[#2c4d8e] rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2"
+                className="w-full text-center py-3 text-sm font-bold text-white bg-[#223d71] hover:bg-[#2c4d8e] rounded-xl shadow-xs transition-colors flex sm:hidden items-center justify-center gap-2"
               >
                 <PenLine className="w-4 h-4 text-[#ffba56]" />
                 Submit a Problem

@@ -11,7 +11,7 @@ const exploreLinks = [
   { label: 'Issue', href: '/#issue' },
   { label: 'Idea', href: '/#idea' },
   { label: 'Innovation', href: '/#innovation' },
-  { label: 'Partnering With Us', href: '/#partnering' },
+  { label: 'Partner With Us', href: '/#partnering' },
   { label: 'Submit a Problem', href: '/#contact' },
 ];
 

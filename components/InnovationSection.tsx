@@ -353,7 +353,7 @@ export default function InnovationSection() {
         {/* Section heading */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7f9af4]/15 border border-[#7f9af4]/30 text-xs font-bold tracking-wider uppercase text-[#223d71] mb-4">
-            How We Work
+            How It Works
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#223d71]">Innovation</h2>
           <p className="mt-4 text-base sm:text-lg text-[#223d71]/75 leading-relaxed">
@@ -370,7 +370,6 @@ export default function InnovationSection() {
               className="group rounded-2xl border border-dashed border-[#223d71]/25 bg-[#fafbfc] p-5 hover:border-[#7f9af4] transition-colors"
             >
               <div className="flex items-center gap-2 text-[#223d71]">
-                <span className="text-xs font-bold text-[#223d71]/50">A</span>
                 <Globe className="w-4 h-4 text-[#7f9af4]" />
                 <h3 className="font-bold">Submit a General Problem</h3>
               </div>
@@ -388,7 +387,6 @@ export default function InnovationSection() {
               className="group rounded-2xl border-2 border-[#223d71] bg-white p-5 hover:bg-[#f4f7fc] transition-colors"
             >
               <div className="flex items-center gap-2 text-[#223d71]">
-                <span className="text-xs font-bold text-[#223d71]/50">B</span>
                 <PenLine className="w-4 h-4 text-[#ffba56]" />
                 <h3 className="font-bold">Submit Your Problem</h3>
               </div>
@@ -402,7 +400,7 @@ export default function InnovationSection() {
             </Link>
           </div>
 
-          <Connector label="Path B" />
+          <Connector />
 
           {/* Step 2: Initial consultation */}
           <div className="rounded-2xl border border-[#223d71]/15 bg-[#f4f7fc] p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
