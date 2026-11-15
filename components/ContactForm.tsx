@@ -120,6 +120,8 @@ export default function ContactForm() {
   const turnstileBox = useRef<HTMLDivElement>(null);
   const widgetId = useRef<string | null>(null);
   const token = useRef<string | null>(null);
+  // True while Cloudflare is showing the "Verify you are human" box and waiting for the visitor to tick it.
+  const needsCheck = useRef(false);
   useEffect(() => {
     let cancelled = false;
     loadTurnstile()
@@ -134,6 +136,8 @@ export default function ContactForm() {
           callback: (t: string) => (token.current = t),
           'expired-callback': () => (token.current = null),
           'error-callback': () => (token.current = null),
+          'before-interactive-callback': () => (needsCheck.current = true),
+          'after-interactive-callback': () => (needsCheck.current = false),
         });
       })
       .catch(() => {});
@@ -144,11 +148,23 @@ export default function ContactForm() {
     };
   }, []);
 
-  /** Waits briefly for the Turnstile token, which usually arrives a second or two after the page loads. */
+  /**
+   * Waits briefly for the Turnstile token, which usually arrives a second or two after the page loads.
+   * Stops early if Cloudflare is waiting for the visitor to tick the box, since waiting won't help then.
+   */
   async function getToken(timeoutMs = 10000) {
     const started = Date.now();
-    while (!token.current && Date.now() - started < timeoutMs) await new Promise((r) => setTimeout(r, 200));
+    while (!token.current && !needsCheck.current && Date.now() - started < timeoutMs) {
+      await new Promise((r) => setTimeout(r, 200));
+    }
     return token.current;
+  }
+
+  /** Explains why there's no token yet, so the visitor knows what to do next. */
+  function missingTokenMessage() {
+    if (needsCheck.current) return 'Please tick “Verify you are human” above, then press Submit again.';
+    if (widgetId.current) return 'The spam check is taking longer than usual. Please wait a moment, then press Submit again.';
+    return "We couldn't load the spam check. Please refresh the page and try again.";
   }
 
   /** Tokens are single-use, so get a fresh one after any attempt that didn't succeed. */
@@ -198,7 +214,6 @@ export default function ContactForm() {
 
     const data = new FormData(form);
 
-    // Honeypot: real visitors never see this field, so anything in it is a bot. Pretend it worked.
     // Honeypot filled in, or submitted impossibly fast: a bot. Pretend it worked.
     if (data.get('website') || Date.now() - mountedAt.current < MIN_FILL_MS) {
       setStatus('success');
@@ -209,7 +224,7 @@ export default function ContactForm() {
     setErrorMessage('');
     const turnstileToken = await getToken();
     if (!turnstileToken) {
-      setErrorMessage("We couldn't run the spam check. Please refresh the page and try again.");
+      setErrorMessage(missingTokenMessage());
       setStatus('error');
       return;
     }
@@ -397,13 +412,15 @@ export default function ContactForm() {
             )}
           </p>
         )}
-        <button
-          type="submit"
-          disabled={!ready || status === 'submitting'}
-          className="rounded-lg bg-[#223d71] px-12 py-3.5 text-base font-bold text-white transition-colors hover:bg-[#2c4d8e] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7f9af4] focus-visible:ring-offset-2 disabled:opacity-60 disabled:cursor-wait"
-        >
-          {status === 'submitting' ? 'Submitting…' : 'Submit'}
-        </button>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            disabled={!ready || status === 'submitting'}
+            className="rounded-lg bg-[#223d71] px-12 py-3.5 text-base font-bold text-white transition-colors hover:bg-[#2c4d8e] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7f9af4] focus-visible:ring-offset-2 disabled:opacity-60 disabled:cursor-wait"
+          >
+            {status === 'submitting' ? 'Submitting…' : 'Submit'}
+          </button>
+        </div>
       </div>
     </form>
   );
