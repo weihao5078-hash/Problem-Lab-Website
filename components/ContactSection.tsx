@@ -4,52 +4,42 @@ import ContactForm from '@/components/ContactForm';
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="py-20 md:py-28 bg-[#fdf8f9] border-b border-[#223d71]/10 scroll-mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Contact intro + custom form (submits to HubSpot) */}
-        <div className="bg-white rounded-3xl border border-[#223d71]/15 shadow-sm overflow-clip">
-          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#223d71]/15">
-            
-            {/* Left: heading, blurb and contact details */}
-            <div className="p-8 sm:p-12 lg:p-16 flex flex-col justify-start items-start md:self-start md:sticky md:top-24">
-              <h2 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#223d71]">
-                Submit a Problem
-              </h2>
-              <p className="mt-4 text-base text-[#223d71]/80 leading-relaxed max-w-md">
-                Have an unaddressed industry problem, a challenge you want properly investigated, or an organisation ready to partner with Problem Lab? Share the details and our team will be in touch.
-              </p>
+    <section id="contact" className="bg-ink text-on-ink py-(--section-gap-s)">
+      <div className="wrap grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-12">
+        {/* Left: heading, blurb and contact details. The gold focus ring reads on the navy band. */}
+        <div className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start flex flex-col items-start [--color-focus:var(--color-accent-3)]">
+          <h2>Submit a Problem</h2>
+          <p className="lead mt-6 text-on-ink-muted">
+            Have an unaddressed industry problem, a challenge you want properly investigated, or an organisation ready
+            to partner with Problem Lab? Share the details and our team will be in touch.
+          </p>
 
-              <div className="mt-6 flex flex-col gap-3 text-xs sm:text-sm text-[#223d71]/80">
-                <div className="flex items-center gap-2.5">
-                  <Mail className="w-4 h-4 text-[#7f9af4] shrink-0" />
-                  {site.emailVerified ? (
-                    <a href={`mailto:${site.email}`} className="font-semibold text-[#223d71] hover:underline">
-                      {site.email}
-                    </a>
-                  ) : (
-                    <span className="font-semibold text-[#223d71]">{site.email}</span>
-                  )}
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <MapPin className="w-4 h-4 mt-0.5 text-[#7f9af4] shrink-0" />
-                  <address className="not-italic leading-relaxed">
-                    {site.address.org}
-                    <br />
-                    {site.address.lines.join(', ')}
-                  </address>
-                </div>
-              </div>
+          <div className="mt-10 flex flex-col gap-4 border-t border-on-ink/20 pt-8 text-on-ink-muted">
+            <div className="flex items-center gap-3">
+              <Mail className="w-5 h-5 text-accent-2 shrink-0" aria-hidden="true" />
+              {site.emailVerified ? (
+                <a href={`mailto:${site.email}`} className="font-bold text-on-ink hover:underline">
+                  {site.email}
+                </a>
+              ) : (
+                <span className="font-bold text-on-ink">{site.email}</span>
+              )}
             </div>
-
-            {/* Right: custom intake form, sent to HubSpot */}
-            <div className="p-6 sm:p-10 lg:p-12 bg-[#f9f8f4]">
-              <ContactForm />
+            <div className="flex items-start gap-3">
+              <MapPin className="w-5 h-5 mt-0.5 text-accent-2 shrink-0" aria-hidden="true" />
+              <address className="not-italic">
+                {site.address.org}
+                <br />
+                {site.address.lines.join(', ')}
+              </address>
             </div>
-
           </div>
         </div>
 
+        {/* Right: custom intake form, sent to HubSpot */}
+        <div className="lg:col-start-7 lg:col-span-6 rounded-card bg-paper text-ink p-6 sm:p-10">
+          <ContactForm />
+        </div>
       </div>
     </section>
   );

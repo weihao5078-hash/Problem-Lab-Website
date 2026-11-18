@@ -29,7 +29,7 @@ export default function RootLayout({
         <link rel="preload" href="/fonts/lato-latin-700-normal.woff2" as="font" type="font/woff2" crossOrigin="" />
         <link rel="stylesheet" href="/fonts/lato.css" />
       </head>
-      <body className="antialiased bg-white text-[#223d71] selection:bg-[#7f9af4] selection:text-white" suppressHydrationWarning>
+      <body className="antialiased bg-paper text-ink" suppressHydrationWarning>
         {children}
       </body>
     </html>

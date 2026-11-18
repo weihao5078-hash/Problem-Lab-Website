@@ -9,29 +9,26 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#223d71] selection:bg-[#7f9af4] selection:text-white">
-      {/* MD3 Top App Bar */}
+    <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      {/* Main Content Sections */}
       <main className="flex-1 w-full">
-        {/* 1. Hero Section with Interactive Morphing Animation */}
+        {/* 1. Hero: the logo animation, with the claim and the main action at its base */}
         <HeroSection />
 
-        {/* 2. Issue · Idea Split Section from Wireframe Sketch */}
+        {/* 2. Issue and Idea, then the four-stage process */}
         <IssueIdeaSection />
 
         {/* 3. Innovation: process diagram from first contact to delivery */}
         <InnovationSection />
 
-        {/* 4. What You Get | What Students Get split */}
+        {/* 4. What you do and what you get */}
         <WhatYouGetSection />
 
-        {/* 5. Contact Section from Wireframe Sketch */}
+        {/* 5. Submit a problem */}
         <ContactSection />
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

@@ -3,7 +3,15 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { CheckCircle2, ChevronDown } from 'lucide-react';
-import { consentCopy, fields, SUBMIT_PATH, TURNSTILE_SITE_KEY, TURNSTILE_TEST_SITE_KEY } from '@/lib/hubspot';
+import {
+  consentCopy,
+  fields,
+  fieldsFor,
+  SUBMIT_PATH,
+  TURNSTILE_SITE_KEY,
+  TURNSTILE_TEST_SITE_KEY,
+  type SubmitKind,
+} from '@/lib/hubspot';
 import { site } from '@/lib/site';
 import { countries, DEFAULT_COUNTRY, findCountry, flagEmoji } from '@/lib/countries';
 
@@ -43,9 +51,9 @@ const isLocalHost = (host: string) => host === 'localhost' || host === '127.0.0.
 type HubSpotError = { message?: string; errorType?: string };
 
 const inputClass =
-  'block w-full rounded-lg border border-[#223d71]/15 bg-white px-4 text-base text-[#223d71] placeholder:text-[#223d71]/40 ' +
-  'transition-colors focus:outline-none focus:border-[#7f9af4] focus:ring-2 focus:ring-[#7f9af4]/30 ' +
-  'aria-[invalid=true]:border-[#b42318]';
+  'block w-full rounded-lg border border-muted bg-paper px-4 text-base text-ink placeholder:text-muted ' +
+  'focus:outline-2 focus:-outline-offset-2 focus:outline-focus ' +
+  'aria-[invalid=true]:border-error';
 
 function readCookie(name: string) {
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
@@ -92,6 +100,11 @@ function validateControl(el: HTMLInputElement | HTMLTextAreaElement, countryIso:
   return '';
 }
 
+const kindOptions: { value: SubmitKind; label: string }[] = [
+  { value: 'problem', label: 'Just share a problem' },
+  { value: 'partner', label: 'Work with us' },
+];
+
 /** Turns HubSpot's error list into one sentence a visitor can act on. */
 function describeErrors(errors: HubSpotError[]) {
   const types = new Set(errors.map((e) => e.errorType));
@@ -102,6 +115,9 @@ function describeErrors(errors: HubSpotError[]) {
 }
 
 export default function ContactForm() {
+  // 'problem' asks for nothing but the problem; 'partner' adds contact details and consent.
+  const [kind, setKind] = useState<SubmitKind>('problem');
+  const anonymous = kind === 'problem';
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -230,7 +246,7 @@ export default function ContactForm() {
     }
 
     const values = Object.fromEntries(
-      fields.map((f) => {
+      fieldsFor(kind).map((f) => {
         const value = String(data.get(f.name) ?? '').trim();
         // Send the full international number, e.g. "+65 9123 4567".
         return [f.name, f.type === 'tel' && value ? `+${country.dial} ${value}` : value];
@@ -242,11 +258,17 @@ export default function ContactForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          kind,
           token: turnstileToken,
           values,
           consentToProcess: data.get('consentToProcess') === 'on',
           communications: data.get('communications') === 'on',
-          context: { hutk: readCookie('hubspotutk'), pageUri: window.location.href, pageName: document.title },
+          // The tracking cookie identifies the visitor, so anonymous submissions leave it out.
+          context: {
+            hutk: anonymous ? undefined : readCookie('hubspotutk'),
+            pageUri: anonymous ? window.location.origin + window.location.pathname : window.location.href,
+            pageName: document.title,
+          },
         }),
       });
       if (res.ok) {
@@ -265,10 +287,12 @@ export default function ContactForm() {
   if (status === 'success') {
     return (
       <div role="status" className="flex flex-col items-start gap-4 py-8">
-        <CheckCircle2 className="w-10 h-10 text-[#7f9af4]" aria-hidden="true" />
-        <h3 className="text-2xl font-bold text-[#223d71]">Thanks, we&apos;ve got it.</h3>
-        <p className="text-base text-[#223d71]/75 leading-relaxed">
-          Our team will review your submission and get back to you by email.
+        <CheckCircle2 className="w-10 h-10 text-accent-2-ink" aria-hidden="true" />
+        <h3 className="text-2xl">Thanks, we&apos;ve got it.</h3>
+        <p className="text-muted">
+          {anonymous
+            ? 'Our team will review the problem. If we take it on, we publish the outcome on our website, socials or GitHub.'
+            : 'Our team will review your submission and get back to you by email.'}
         </p>
       </div>
     );
@@ -276,19 +300,42 @@ export default function ContactForm() {
 
   return (
     <form method="post" onSubmit={handleSubmit} onChange={handleChange} noValidate className="flex flex-col gap-6" aria-busy={status === 'submitting'}>
-      {/* Intro: kept a step smaller than the section's "Submit a Problem" heading. */}
-      <div className="flex flex-col gap-3 pb-2">
-        <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#223d71]">Get to know us</h3>
-        <p className="text-base font-semibold text-[#223d71]/85 leading-relaxed">
-          Join us at Problem Lab to collaborate with SUTD&apos;s Makers.
-        </p>
-        <p className="text-base text-[#223d71]/75 leading-relaxed">
-          Problem Lab is a student-led research collective that goes into the real world to find, investigate and
-          frame problems worth solving.
+      {/* Intro: one line on what happens after sending, a step smaller than the section heading. */}
+      <div className="flex flex-col gap-2">
+        <h3 className="text-2xl">Tell us the problem</h3>
+        <p className="text-ink">
+          {anonymous
+            ? 'No name or email needed. We read every submission.'
+            : 'We read every submission and reply by email to arrange a first consultation.'}
         </p>
       </div>
 
-      {fields.map((f) => {
+      {/* Two paths as native radios, so arrow keys and screen readers work without extra code.
+          The problem box stays mounted across a switch, so its text is kept. */}
+      <fieldset className="grid grid-cols-2 gap-1 rounded-lg bg-paper-3 p-1">
+        <legend className="visually-hidden">How do you want to submit?</legend>
+        {kindOptions.map((o) => (
+          <label
+            key={o.value}
+            className="flex min-h-11 cursor-pointer items-center justify-center rounded-md px-3 text-center text-sm font-bold text-muted transition-colors duration-150 has-[:checked]:bg-paper has-[:checked]:text-ink has-[:checked]:shadow-sm has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-focus"
+          >
+            <input
+              type="radio"
+              name="kind"
+              value={o.value}
+              checked={kind === o.value}
+              onChange={() => {
+                setKind(o.value);
+                setFieldErrors({});
+              }}
+              className="visually-hidden"
+            />
+            {o.label}
+          </label>
+        ))}
+      </fieldset>
+
+      {fieldsFor(kind).map((f) => {
         const error = fieldErrors[f.name];
         const errorId = `${f.name}-error`;
         const common = {
@@ -297,20 +344,29 @@ export default function ContactForm() {
           required: f.required,
           maxLength: f.maxLength,
           'aria-invalid': error ? true : undefined,
-          'aria-describedby': error ? errorId : undefined,
+          'aria-describedby': [error && errorId, f.type === 'textarea' && anonymous && 'message-hint'].filter(Boolean).join(' ') || undefined,
         };
         return (
           <div key={f.name} className="flex flex-col gap-2">
-            <label htmlFor={f.name} className="text-base font-bold text-[#223d71]">
+            <label htmlFor={f.name} className="font-bold text-ink">
               {f.label}
-              {f.required && <span className="text-[#b42318]" aria-hidden="true">*</span>}
+              {f.required ? (
+                <span className="text-error" aria-hidden="true">*</span>
+              ) : (
+                <span className="font-normal text-muted"> (optional)</span>
+              )}
             </label>
             {f.type === 'textarea' ? (
               <>
                 <textarea {...common} rows={4} placeholder={f.placeholder} className={`${inputClass} py-3 resize-y`} />
+                {anonymous && (
+                  <p id="message-hint" className="text-sm text-muted">
+                    Please leave out names and contact details: problems we take on may be published.
+                  </p>
+                )}
                 {/* Counter appears once the answer gets close to the limit. */}
                 {messageLength >= f.maxLength * 0.8 && (
-                  <p className="text-right text-sm text-[#223d71]/60" aria-live="polite">
+                  <p className="text-right text-sm text-muted tabular-nums" aria-live="polite">
                     {messageLength.toLocaleString()} / {f.maxLength.toLocaleString()} characters
                   </p>
                 )}
@@ -319,10 +375,10 @@ export default function ContactForm() {
               <div className="flex gap-2">
                 {/* Country code: a native select laid invisibly over the flag + code, so it keeps the
                     browser's own keyboard, screen-reader and mobile picker behaviour. */}
-                <div className="relative shrink-0 flex items-center gap-2 h-12 rounded-lg border border-[#223d71]/15 bg-white pl-3 pr-2.5 text-base text-[#223d71] transition-colors focus-within:border-[#7f9af4] focus-within:ring-2 focus-within:ring-[#7f9af4]/30">
+                <div className="relative shrink-0 flex items-center gap-2 h-12 rounded-lg border border-muted bg-paper pl-3 pr-2.5 text-base text-ink focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-focus">
                   <span aria-hidden="true" className="text-xl leading-none">{flagEmoji(country.iso)}</span>
                   <span aria-hidden="true">+{country.dial}</span>
-                  <ChevronDown className="w-4 h-4 text-[#223d71]/50" aria-hidden="true" />
+                  <ChevronDown className="w-4 h-4 text-muted" aria-hidden="true" />
                   <select
                     name="phoneCountry"
                     aria-label="Country code"
@@ -354,7 +410,7 @@ export default function ContactForm() {
               <input {...common} type={f.type} autoComplete={f.autoComplete} className={`${inputClass} h-12`} />
             )}
             {error && (
-              <p id={errorId} className="text-sm text-[#b42318]">
+              <p id={errorId} className="text-sm text-error">
                 {error}
               </p>
             )}
@@ -368,39 +424,44 @@ export default function ContactForm() {
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="flex flex-col gap-4 pt-2 text-sm sm:text-[15px] text-[#223d71]/75 leading-relaxed">
-        <p>{consentCopy.communicationsIntro}</p>
-        <label className="flex items-start gap-3 text-base text-[#223d71] cursor-pointer">
-          <input type="checkbox" name="communications" className="mt-1 h-5 w-5 shrink-0 accent-[#223d71]" />
-          <span>{consentCopy.communicationsLabel}</span>
-        </label>
+      <div className="flex flex-col gap-4 pt-2 text-sm text-muted">
+        {/* Consent is only asked for when personal details are given. */}
+        {!anonymous && (
+          <>
+            <p>{consentCopy.communicationsIntro}</p>
+            <label className="flex items-start gap-3 text-base text-ink cursor-pointer">
+              <input type="checkbox" name="communications" className="mt-1 h-5 w-5 shrink-0 accent-ink" />
+              <span>{consentCopy.communicationsLabel}</span>
+            </label>
 
-        <p>{consentCopy.processingIntro}</p>
-        <div className="flex flex-col gap-2">
-          <label className="flex items-start gap-3 text-base font-bold text-[#223d71] cursor-pointer">
-            <input
-              type="checkbox"
-              name="consentToProcess"
-              required
-              aria-invalid={fieldErrors.consentToProcess ? true : undefined}
-              aria-describedby={fieldErrors.consentToProcess ? 'consentToProcess-error' : undefined}
-              className="mt-1 h-5 w-5 shrink-0 accent-[#223d71]"
-            />
-            <span>
-              {consentCopy.processingLabel}
-              <span className="text-[#b42318]" aria-hidden="true">*</span>
-            </span>
-          </label>
-          {fieldErrors.consentToProcess && (
-            <p id="consentToProcess-error" className="text-sm text-[#b42318]">
-              Please tick this box so we can process your request.
-            </p>
-          )}
-        </div>
+            <p>{consentCopy.processingIntro}</p>
+            <div className="flex flex-col gap-2">
+              <label className="flex items-start gap-3 text-base font-bold text-ink cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="consentToProcess"
+                  required
+                  aria-invalid={fieldErrors.consentToProcess ? true : undefined}
+                  aria-describedby={fieldErrors.consentToProcess ? 'consentToProcess-error' : undefined}
+                  className="mt-1 h-5 w-5 shrink-0 accent-ink"
+                />
+                <span>
+                  {consentCopy.processingLabel}
+                  <span className="text-error" aria-hidden="true">*</span>
+                </span>
+              </label>
+              {fieldErrors.consentToProcess && (
+                <p id="consentToProcess-error" className="text-sm text-error">
+                  Please tick this box so we can process your request.
+                </p>
+              )}
+            </div>
+          </>
+        )}
 
         <p>
           We care about your privacy. Learn how we handle your data in our{' '}
-          <Link href="/privacy" className="font-bold text-[#223d71] underline underline-offset-2">
+          <Link href="/privacy" className="font-bold text-ink underline underline-offset-2">
             Privacy Policy
           </Link>
           .
@@ -412,7 +473,7 @@ export default function ContactForm() {
 
       <div aria-live="polite">
         {status === 'error' && (
-          <p className="mb-4 rounded-lg border border-[#b42318]/30 bg-[#b42318]/5 px-4 py-3 text-sm text-[#b42318]">
+          <p className="mb-4 rounded-lg border border-error/30 bg-error/5 px-4 py-3 text-sm text-error">
             {errorMessage || (
               <>
                 Something went wrong sending your submission. Please try again, or email us at{' '}
@@ -424,15 +485,13 @@ export default function ContactForm() {
             )}
           </p>
         )}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            disabled={!ready || status === 'submitting'}
-            className="rounded-lg bg-[#223d71] px-12 py-3.5 text-base font-bold text-white transition-colors hover:bg-[#2c4d8e] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7f9af4] focus-visible:ring-offset-2 disabled:opacity-60 disabled:cursor-wait"
-          >
-            {status === 'submitting' ? 'Submitting…' : 'Submit'}
-          </button>
-        </div>
+        <button
+          type="submit"
+          disabled={!ready || status === 'submitting'}
+          className="btn-primary w-full text-base disabled:opacity-60 disabled:cursor-wait"
+        >
+          {status === 'submitting' ? 'Submitting…' : 'Submit a Problem'}
+        </button>
       </div>
     </form>
   );

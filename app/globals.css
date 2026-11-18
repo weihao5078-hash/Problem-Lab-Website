@@ -1,22 +1,20 @@
+/* Hallmark · shape: kept (/), Long Document (/privacy) · genre: editorial · theme: brand · redesign: full · draw: e27398
+ * paper: oklch(98.8% 0.004 265) · accent: oklch(43.1% 0.114 262) · display: Lato · body: Lato · hero: Ledge (/), Banner (/privacy) · nav: edge-aligned · footer: mast · signature: the Issue 2 Idea logo animation across the first screen, the claim resting at its base
+ * axes: light/grotesk-sans/cool · posture: full palette (navy ink and controls, periwinkle signal, gold seal) · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P3 H4 E4 S4 R4 V3 · weakest: P, the page argued "problems before ideas" only below the fold; the hero now states it as the headline */
+/* Hallmark · dismissed kept · the idea anchor is rendered from the rows data in IssueIdeaSection (id={row.id}), present in the served page */
+/* Hallmark · swapped draw e27398: Letter shape, Corridor hero and letter-close footer refuse the kept full-width logo animation and the tier diagram; took Ledge, kept order and a mast footer */
 @import "tailwindcss";
-
-@theme {
-  --color-brand-blue: #7f9af4;
-  --color-brand-gold: #ffba56;
-  --color-brand-navy: #223d71;
-  --color-brand-navy-light: #2c4d8e;
-  --color-surface-soft: #fafbfc;
-  --color-surface-tint: #f3f6fc;
-}
+@import "./tokens.css";
+@import "./base.css" layer(base);
 
 html {
   scroll-behavior: smooth;
-  font-family: Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: #223d71;
-  background-color: #ffffff;
 }
 
-::selection {
-  background-color: #7f9af4;
-  color: #ffffff;
+/* The main navy action, shared by hero, nav, sections and form; size utilities override it. */
+@layer components {
+  .btn-primary {
+    @apply inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-accent px-6 font-bold text-accent-ink transition-colors duration-150 hover:bg-ink active:translate-y-px;
+  }
 }

@@ -7,7 +7,7 @@
  * Secrets (set in Cloudflare, or in .dev.vars for local testing):
  * - TURNSTILE_SECRET_KEY: the widget's secret key.
  */
-import { consentCopy, fields, SUBMIT_PATH } from '../lib/hubspot';
+import { consentCopy, fieldsFor, SUBMIT_KINDS, SUBMIT_PATH, type SubmitKind } from '../lib/hubspot';
 import { hubspot, hubspotSubmitUrl } from './hubspot';
 
 interface Env {
@@ -17,6 +17,7 @@ interface Env {
 
 /** What the contact form sends to the Worker. */
 interface SubmitBody {
+  kind?: unknown;
   token?: unknown;
   values?: unknown;
   consentToProcess?: unknown;
@@ -56,6 +57,17 @@ async function handleSubmit(request: Request, env: Env, url: URL): Promise<Respo
   } catch {
     return fail(400, 'BAD_REQUEST');
   }
+  if (!body || typeof body !== 'object') return fail(400, 'BAD_REQUEST');
+
+  // Pages cached from before the two paths existed send no kind; they are partner submissions.
+  const kind = (body.kind ?? 'partner') as SubmitKind;
+  if (!SUBMIT_KINDS.includes(kind)) return fail(400, 'BAD_REQUEST');
+  const anonymous = kind === 'problem';
+  const submitUrl = hubspotSubmitUrl(kind);
+  if (!submitUrl) {
+    console.error(`No HubSpot form configured for ${kind} submissions`);
+    return fail(500, 'SERVER_MISCONFIGURED');
+  }
 
   // 1. Spam check: verify the Turnstile token with Cloudflare.
   if (!env.TURNSTILE_SECRET_KEY) {
@@ -64,7 +76,8 @@ async function handleSubmit(request: Request, env: Env, url: URL): Promise<Respo
   }
   const token = str(body.token, 2048);
   if (!token) return fail(403, 'SPAM_CHECK_FAILED');
-  const ip = request.headers.get('cf-connecting-ip') ?? undefined;
+  // Anonymous submissions keep the visitor's IP out of every onward call, Turnstile included.
+  const ip = anonymous ? undefined : (request.headers.get('cf-connecting-ip') ?? undefined);
   const verifyRes = await fetch(SITEVERIFY_URL, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -77,45 +90,60 @@ async function handleSubmit(request: Request, env: Env, url: URL): Promise<Respo
   }
 
   // 2. Re-check the fields here too: the browser checks can be skipped by anyone calling this URL directly.
+  // Only this kind's fields are read, so contact details sent with an anonymous submission are dropped.
   const values = (body.values && typeof body.values === 'object' ? body.values : {}) as Record<string, unknown>;
   const hubspotFields: { objectTypeId: string; name: string; value: string }[] = [];
-  for (const f of fields) {
+  for (const f of fieldsFor(kind)) {
     const value = typeof values[f.name] === 'string' ? (values[f.name] as string).trim() : '';
     if (f.required && !value) return fail(400, 'REQUIRED_FIELD');
     // Phone gets the country code added, so allow a little extra length for it.
     if (value.length > f.maxLength + (f.type === 'tel' ? 8 : 0)) return fail(400, 'INPUT_TOO_LARGE');
     if (value) hubspotFields.push({ objectTypeId: f.objectTypeId, name: f.property, value });
   }
-  if (body.consentToProcess !== true) return fail(400, 'MISSING_PROCESSING_CONSENT');
+  // No personal data on the anonymous path, so no consent to collect.
+  if (!anonymous && body.consentToProcess !== true) return fail(400, 'MISSING_PROCESSING_CONSENT');
 
-  const pageUri = str(body.context?.pageUri, 2000);
-  const hutk = str(body.context?.hutk, 200);
+  // Only this site's own pages count. Anonymous submissions also drop the query and hash, which can carry
+  // identifiers such as HubSpot's email-tracking _hsenc/_hsmi parameters.
+  let pageUri = url.origin;
+  try {
+    const page = new URL(str(body.context?.pageUri, 2000));
+    if (page.origin === url.origin) pageUri = anonymous ? page.origin + page.pathname : page.href;
+  } catch {
+    /* missing or malformed: keep the site's origin */
+  }
+  // The HubSpot tracking cookie identifies the visitor, so it is only forwarded for partner submissions.
+  const hutk = anonymous ? '' : str(body.context?.hutk, 200);
   const payload = {
     submittedAt: Date.now(),
     fields: hubspotFields,
     context: {
-      pageUri: pageUri.startsWith(url.origin) ? pageUri : url.origin,
+      pageUri,
       pageName: str(body.context?.pageName, 200) || 'Problem Lab',
       ...(hutk ? { hutk } : {}),
       ...(ip ? { ipAddress: ip } : {}),
     },
-    legalConsentOptions: {
-      consent: {
-        consentToProcess: true,
-        text: consentCopy.processingIntro,
-        communications: [
-          {
-            value: body.communications === true,
-            subscriptionTypeId: hubspot.communicationSubscriptionTypeId,
-            text: consentCopy.communicationsLabel,
+    ...(anonymous
+      ? {}
+      : {
+          legalConsentOptions: {
+            consent: {
+              consentToProcess: true,
+              text: consentCopy.processingIntro,
+              communications: [
+                {
+                  value: body.communications === true,
+                  subscriptionTypeId: hubspot.communicationSubscriptionTypeId,
+                  text: consentCopy.communicationsLabel,
+                },
+              ],
+            },
           },
-        ],
-      },
-    },
+        }),
   };
 
   // 3. Forward to HubSpot and pass its answer back to the form.
-  const hsRes = await fetch(hubspotSubmitUrl, {
+  const hsRes = await fetch(submitUrl, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(payload),

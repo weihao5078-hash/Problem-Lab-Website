@@ -22,9 +22,13 @@ const sections: { heading: string; body: React.ReactNode }[] = [
     heading: 'What we collect',
     body: (
       <>
-        <p>When you submit a problem or contact us, we collect what you enter in the form, for example:</p>
+        <p>
+          If you choose &ldquo;Just share a problem&rdquo;, we collect only the description you write. We do not ask
+          who you are, and we do not pass your IP address or cookies on to HubSpot with it.
+        </p>
+        <p>If you choose &ldquo;Work with us&rdquo;, we collect what you enter in the form:</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>your name, email address and organisation (optional for general issues);</li>
+          <li>your name, email address and organisation, and, if you choose, your phone number and job title;</li>
           <li>a description of the issue and any details you choose to share.</li>
         </ul>
       </>
@@ -63,7 +67,8 @@ const sections: { heading: string; body: React.ReactNode }[] = [
     heading: 'Publishing project outcomes',
     body: (
       <p>
-        For general issues, we may publish the outcome on our website, socials or GitHub without identifying you.
+        For problems shared without contact details, we may publish the problem and its outcome on our website,
+        socials or GitHub.
         For partner projects, you decide whether the final work can be made public; we will not publish it without
         your agreement.
       </p>
@@ -98,20 +103,24 @@ const sections: { heading: string; body: React.ReactNode }[] = [
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#223d71]">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 w-full py-16 md:py-24">
-        <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Privacy Policy</h1>
-          <p className="mt-3 text-sm text-[#223d71]/60">Last updated: November 2026</p>
-          <div className="mt-10 space-y-8">
-            {sections.map((s) => (
-              <section key={s.heading}>
-                <h2 className="text-lg font-bold">{s.heading}</h2>
-                <div className="mt-2 space-y-3 text-sm sm:text-base text-[#223d71]/80 leading-relaxed">{s.body}</div>
-              </section>
-            ))}
-          </div>
+      <main className="flex-1 w-full pt-24 pb-(--section-gap)">
+        <article className="wrap">
+          <header className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-4 items-end pb-16 border-b border-rule">
+            <h1 className="lg:col-span-8">Privacy Policy</h1>
+            <p className="lg:col-span-4 lg:text-right text-muted">Last updated: November 2026</p>
+          </header>
+          {/* Long document: each heading sits in the margin beside its text */}
+          {sections.map((s) => (
+            <section
+              key={s.heading}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-3 border-b border-rule py-10"
+            >
+              <h2 className="lg:col-span-4 text-title">{s.heading}</h2>
+              <div className="lg:col-span-8 space-y-3 text-lg text-ink leading-relaxed max-w-[65ch]">{s.body}</div>
+            </section>
+          ))}
         </article>
       </main>
       <Footer />

@@ -18,24 +18,37 @@ export const SUBMIT_PATH = '/api/submit';
 // HubSpot object type id for contacts, used in field references.
 const CONTACT = '0-1';
 
-/** Form inputs, in display order. `name` is the HTML input name; `property` is where HubSpot stores it. */
+/**
+ * Form inputs, in display order: the problem first. `name` is the HTML input name; `property` is where HubSpot
+ * stores it. Phone and job title are optional, so the HubSpot form must not mark them required either.
+ */
 export const fields = [
-  { name: 'firstname', label: 'Name', type: 'text', required: true, autoComplete: 'name', maxLength: 100, objectTypeId: CONTACT, property: 'firstname' },
-  { name: 'email', label: 'Email', type: 'email', required: true, autoComplete: 'email', maxLength: 254, objectTypeId: CONTACT, property: 'email' },
-  { name: 'phone', label: 'Phone Number', type: 'tel', required: true, autoComplete: 'tel-national', maxLength: 30, objectTypeId: CONTACT, property: 'phone' },
-  { name: 'company', label: 'Organisation Name', type: 'text', required: true, autoComplete: 'organization', maxLength: 200, objectTypeId: CONTACT, property: 'organisation_name' },
-  { name: 'jobtitle', label: 'Job Title', type: 'text', required: true, autoComplete: 'organization-title', maxLength: 100, objectTypeId: CONTACT, property: 'jobtitle' },
   {
     name: 'message',
-    label: 'What are your pain points or challenges',
+    label: 'Describe the problem',
     type: 'textarea',
-    required: false,
-    placeholder: 'Anything that you would like support in',
+    required: true,
+    placeholder: 'What is the problem, who does it affect, and what have you tried so far?',
     maxLength: 5000,
     objectTypeId: CONTACT,
     property: 'message',
   },
+  { name: 'firstname', label: 'Name', type: 'text', required: true, autoComplete: 'name', maxLength: 100, objectTypeId: CONTACT, property: 'firstname' },
+  { name: 'email', label: 'Email', type: 'email', required: true, autoComplete: 'email', maxLength: 254, objectTypeId: CONTACT, property: 'email' },
+  { name: 'company', label: 'Organisation Name', type: 'text', required: true, autoComplete: 'organization', maxLength: 200, objectTypeId: CONTACT, property: 'organisation_name' },
+  { name: 'phone', label: 'Phone Number', type: 'tel', required: false, autoComplete: 'tel-national', maxLength: 30, objectTypeId: CONTACT, property: 'phone' },
+  { name: 'jobtitle', label: 'Job Title', type: 'text', required: false, autoComplete: 'organization-title', maxLength: 100, objectTypeId: CONTACT, property: 'jobtitle' },
 ] as const;
+
+/**
+ * Two ways to submit: 'problem' sends only the problem text, anonymously, to a separate HubSpot form;
+ * 'partner' sends the problem plus contact details and consent to the contact form.
+ */
+export type SubmitKind = 'problem' | 'partner';
+export const SUBMIT_KINDS: readonly SubmitKind[] = ['problem', 'partner'];
+
+/** The fields each kind of submission shows and sends. */
+export const fieldsFor = (kind: SubmitKind) => (kind === 'problem' ? fields.filter((f) => f.name === 'message') : fields);
 
 export const consentCopy = {
   communicationsIntro:
